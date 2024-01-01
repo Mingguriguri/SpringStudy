@@ -1,7 +1,9 @@
-package com.in28minutes.learnspringframework;
+package com.in28minutes.learnspringframework.helloworld;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 
 //Eliminate verbosity in creating Java Beans
 //Public accessor methos, constructor,
@@ -38,11 +40,28 @@ public class HelloWorldConfiguration {
 		return new Person(name, age, address3); 
 	}
 	
+	// No qualifying bean of type 'com.in28minutes.learnspringframework.Address' 
+	// available: expected single matching bean but found 2: address2,address3
+	@Bean
+	@Primary
+	public Person person4Parameters(String name, int age, Address address) { // name, age, address
+		return new Person(name, age, address); 
+	}
+	
+	@Bean
+	public Person person5Qualifier(String name, int age, @Qualifier("address3Qualifier") Address address) { // name, age, address3Qualifier
+		return new Person(name, age, address); 
+	}
+	
+	
 	@Bean(name = "address2")
+	@Primary
 	public Address address(){
 		return new Address("Bakery Street", "London");
 	}
+	
 	@Bean(name = "address3")
+	@Qualifier("address3Qualifier")
 	public Address address3(){
 		return new Address("Motinagar", "HGyderabad");
 	}
