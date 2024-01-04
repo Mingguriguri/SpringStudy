@@ -9,23 +9,31 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
-@Component
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+
+//@Component
+@Named
 class BusinessService {
 
 	private DataService dataService;
 
-	@Autowired
-	public DataService getDataService() {
-		System.out.println("Setter Injection");
-		return dataService;
-	}
-
+	//@Autowired
+	@Inject
 	public void setDataService(DataService dataService) {
+		System.out.println("Setter Injection");
 		this.dataService = dataService;
 	}
+	
+	public DataService getDataService() {
+		return dataService;
+	}
+	
+	
 }
 
-@Component
+//@Component
+@Named
 class DataService {
 	
 }
@@ -37,6 +45,8 @@ public class CdiContextLauncherApplication {
 							(CdiContextLauncherApplication.class)){
 			Arrays.stream(context.getBeanDefinitionNames()).
 			forEach(System.out::println);
+			
+			System.out.println(context.getBean(BusinessService.class).getDataService());
 			
 		}
 	}                                                                                                                                                                                                                                                                
