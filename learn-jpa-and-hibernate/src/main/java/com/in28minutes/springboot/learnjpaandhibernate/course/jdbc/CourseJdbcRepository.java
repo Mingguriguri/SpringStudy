@@ -1,6 +1,7 @@
 package com.in28minutes.springboot.learnjpaandhibernate.course.jdbc;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -23,6 +24,12 @@ public class CourseJdbcRepository {
 			delete from course
 			where id = ?
 			""";
+	private static String SELECT_QUERY = 
+			"""
+			select * from course
+			where id = ?
+			""";
+	
 	
 	
 	public void insert(Course course) {
@@ -33,4 +40,9 @@ public class CourseJdbcRepository {
 		springJdbcTemplate.update(DELETE_QUERY, id);
 	}
 	
+	public Course findById(long id) {
+		// (2) ResultSet -> Bean => Row Mapper : 각 Bean에 연결해줌 (Use BeanPropertyRowMapper)
+		// (3) Id (input)
+		return springJdbcTemplate.queryForObject(SELECT_QUERY, new BeanPropertyRowMapper<>(Course.class), id);
+	}
 }
