@@ -1,0 +1,16 @@
+!SESSION 2024-01-14 16:03:17.938 -----------------------------------------------
+eclipse.buildId=4.30.0.20231201-1200
+java.version=21.0.1
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=ko_KR
+Framework arguments:  -product org.eclipse.epp.package.jee.product
+Command-line arguments:  -os win32 -ws win32 -arch x86_64 -product org.eclipse.epp.package.jee.product
+
+!ENTRY org.eclipse.emf.ecore 2 0 2024-01-14 16:06:10.771
+!MESSAGE Both 'org.eclipse.jst.j2ee.core' and 'org.eclipse.jst.j2ee.core' register a package for 'application.xmi'
+
+!ENTRY ch.qos.logback.classic 1 0 2024-01-14 16:06:12.336
+!MESSAGE Activated before the state location was initialized. Retry after the state location is initialized.
+
+!ENTRY ch.qos.logback.classic 1 0 2024-01-14 16:06:30.276
+!MESSAGE Logback config file: C:\SpringStudy\demo\.metadata\.plugins\org.eclipse.m2e.logback\logback.2.2.1.20231030-1438.xml
