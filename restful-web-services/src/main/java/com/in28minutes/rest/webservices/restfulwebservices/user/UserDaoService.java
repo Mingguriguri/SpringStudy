@@ -39,4 +39,9 @@ public class UserDaoService {
 		Predicate<? super User> predicate = user -> user.getId().equals(id);
 		return users.stream().filter(predicate).findFirst().orElse(null); // 함수형 프로그래밍 코드를 알면 이해하기 쉬울 코드
 	 }
+	 
+	 public void deleteById(int id) {
+		Predicate<? super User> predicate = user -> user.getId().equals(id);
+		users.removeIf(predicate);
+	 }
 }
