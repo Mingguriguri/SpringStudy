@@ -37,6 +37,6 @@ public class UserDaoService {
 	 public User findOne(int id) {
 		 // 사용자의 아이디가 인수랑 같은지 확인해야 하니 getId를 호출한 다음 equals로 비교
 		Predicate<? super User> predicate = user -> user.getId().equals(id);
-		return users.stream().filter(predicate).findFirst().get(); // 함수형 프로그래밍 코드를 알면 이해하기 쉬울 코드
+		return users.stream().filter(predicate).findFirst().orElse(null); // 함수형 프로그래밍 코드를 알면 이해하기 쉬울 코드
 	 }
 }
