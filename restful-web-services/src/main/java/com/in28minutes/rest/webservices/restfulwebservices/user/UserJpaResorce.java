@@ -18,16 +18,20 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.in28minutes.rest.webservices.restfulwebservices.jpa.PostRepository;
 import com.in28minutes.rest.webservices.restfulwebservices.jpa.UserRepository;
+
 import jakarta.validation.Valid;
 
 @RestController
 public class UserJpaResorce {
 
 	private UserRepository repository;
+	private PostRepository postRepository;
 	
-	public UserJpaResorce(UserRepository repository) {
+	public UserJpaResorce(UserRepository repository, PostRepository postRepository) {
 		this.repository = repository;
+		this.postRepository = postRepository;
 	}
 	
 	// GET /users
@@ -58,15 +62,46 @@ public class UserJpaResorce {
 		repository.deleteById(id);
 	}
 	
+	// GET /users/{id}/posts
+	@GetMapping("/jpa/users/{id}/posts")
+	public List<Post> retrievePostsForUser(@PathVariable int id){
+		Optional<User> user = repository.findById(id);
+		
+		if(user.isEmpty())
+			throw new UserNotFoundException("id:"+id);
+		return user.get().getPost();
+	}
+	
+	
+	
+		
 	// POST /users
 	@PostMapping("/jpa/users")
-	public ResponseEntity<Object> createUser(@RequestBody User user) {
+	public ResponseEntity<Object> createUser(@Valid @RequestBody User user) {
 		User savedUser = repository.save(user);
 		// /users/{id} => 즉, user.getId()
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest()
 							.path("/{id}")
 							.buildAndExpand(savedUser.getId())
 							.toUri();
+		return ResponseEntity.created(location).build();
+	}
+	
+	// POST /users/{id}/posts
+	@PostMapping("/jpa/users/{id}/posts")
+	public ResponseEntity<Object> createPostsForUser(@PathVariable int id, @Valid @RequestBody Post post){
+		Optional<User> user = repository.findById(id);
+		
+		if(user.isEmpty())
+			throw new UserNotFoundException("id:"+id);
+		post.setUser(user.get());
+		
+		Post savedPost = postRepository.save(post);
+		
+		URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+				.path("/{id}")
+				.buildAndExpand(savedPost.getId())
+				.toUri();
 		return ResponseEntity.created(location).build();
 	}
 	
