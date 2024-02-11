@@ -10,7 +10,7 @@ public class HelloWorldController {
     public String helloWorld() {
 		// Implemented using String Templates
         return """
-                { message: Hello World Java v3 }
+                { message: Hello World Java v4 }
                """;
     }
 }
