@@ -2,7 +2,10 @@ package com.cos.security1.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.cos.security1.model.User;
 
 @Controller // View를 리턴하겠다는 의미!
 public class IndexController {
@@ -41,8 +44,9 @@ public class IndexController {
 		return "joinForm";
 	}
 	
-	@GetMapping("/join") // 실제 회원가입 프로세스
-	public @ResponseBody String join() {
+	@PostMapping("/join") // 실제 회원가입 프로세스
+	public @ResponseBody String join(User user) {
+		System.out.println(user); // 잘 찍히는지 확인
 		return "join";
 	}
 	
