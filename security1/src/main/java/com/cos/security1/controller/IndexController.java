@@ -31,20 +31,20 @@ public class IndexController {
 	}
 	
 	// 스프링시큐리티 해당주소를 낚아채버림!! -> SecurityConfig 파일 생성 후, 작동 안함
-	@GetMapping("/login")
-	public String login() {
+	@GetMapping("/loginForm") // 로그인할 수 있는 Form
+	public String loginForm() {
 		return "loginForm";
 	}
 	
-	@GetMapping("/join")
+	@GetMapping("/joinForm") // 회원가입할 수 있는 Form
+	public String joinForm() {
+		return "joinForm";
+	}
+	
+	@GetMapping("/join") // 실제 회원가입 프로세스
 	public @ResponseBody String join() {
 		return "join";
 	}
 	
-	@GetMapping("/joinProc")
-	public @ResponseBody String joinProc() {
-		return "회원가입 완료됨";
-	}
-
 
 }
