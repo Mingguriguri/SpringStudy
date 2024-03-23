@@ -16,9 +16,9 @@ public class SecurityConfig {
 		
 		http
 		.authorizeRequests()
-			.requestMatchers("/user/**").authenticated()
-			.requestMatchers("/admin/**").access("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
-			.requestMatchers("/admin/**").access("hasRole('ROLE_ADMIN')")
+			.requestMatchers("/user/**").authenticated() 
+			.requestMatchers("/manager/**").access("hasRole('ROLE_ADMIN') or hasRole('ROLE_MANAGER')")
+			.requestMatchers("/admin/**").access("hasRole('ROLE_ADMIN') or hasRole('ROLE_MANAGER')")
 			.anyRequest().permitAll();
 
 		return http.build();
