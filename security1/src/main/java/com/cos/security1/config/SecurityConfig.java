@@ -37,7 +37,10 @@ public class SecurityConfig {
 			.loginProcessingUrl("/login") //로그인 즉 인증 처리를 하는 URL을 설정. 
 										//해당 URL이 호출되면 시큐리티가 낚아채서 대신 로그인 인증처리를 수행. 
 										// 따라서 Controller에 /login을 만들지 않아도 된다.
-			.defaultSuccessUrl("/"); // 정상적으로 인증성공 했을 경우 이동하는 페이지
+			.defaultSuccessUrl("/") // 정상적으로 인증성공 했을 경우 이동하는 페이지
+			.and()
+			.oauth2Login() // oauth
+			.loginPage("/login");
 			
 		return http.build();
 	}
