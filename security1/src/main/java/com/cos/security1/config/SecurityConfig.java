@@ -30,7 +30,12 @@ public class SecurityConfig {
 			.anyRequest().permitAll() // anyRequest(): 그 외 나머지 리소스들, permitAll(): 설정한 리소스의 접근을 인증절차 없이 허용한다는 의미
 			.and()
 			.formLogin() // 로그인 페이지와 기타 로그인 처리 및 성공 실패 처리를 사용하겠다는 의미
-			.loginPage("/loginForm"); // 사용자가 따로 만든 로그인 페이지를 사용하려고 할때 설정
+			.loginPage("/loginForm") // 사용자가 따로 만든 로그인 페이지를 사용하려고 할때 설정
+			.loginProcessingUrl("/login") //로그인 즉 인증 처리를 하는 URL을 설정. 
+										//해당 URL이 호출되면 시큐리티가 낚아채서 대신 로그인 인증처리를 수행. 
+										// 따라서 Controller에 /login을 만들지 않아도 된다.
+			.defaultSuccessUrl("/"); // 정상적으로 인증성공 했을 경우 이동하는 페이지
+			
 		return http.build();
 	}
 }
