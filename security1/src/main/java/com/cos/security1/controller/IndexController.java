@@ -1,15 +1,19 @@
 package com.cos.security1.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cos.security1.model.User;
+import com.cos.security1.repository.UserRepository;
 
 @Controller // View를 리턴하겠다는 의미!
 public class IndexController {
 	
+	@Autowired
+	private UserRepository userRepository;
 	// localhost:8080/
 	@GetMapping({"","/"})
 	public String index() {
@@ -47,6 +51,7 @@ public class IndexController {
 	@PostMapping("/join") // 실제 회원가입 프로세스
 	public @ResponseBody String join(User user) {
 		System.out.println(user); // 잘 찍히는지 확인
+		user.setRole("ROLE_USER");// user의 ROLE을 강제로 넣어준다.
 		return "join";
 	}
 	
