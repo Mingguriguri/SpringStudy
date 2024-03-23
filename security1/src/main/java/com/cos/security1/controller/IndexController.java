@@ -1,6 +1,7 @@
 package com.cos.security1.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,6 +15,10 @@ public class IndexController {
 	
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
+	
 	// localhost:8080/
 	@GetMapping({"","/"})
 	public String index() {
@@ -49,10 +54,19 @@ public class IndexController {
 	}
 	
 	@PostMapping("/join") // 실제 회원가입 프로세스
-	public @ResponseBody String join(User user) {
+	public String join(User user) {
 		System.out.println(user); // 잘 찍히는지 확인
 		user.setRole("ROLE_USER");// user의 ROLE을 강제로 넣어준다.
-		return "join";
+		// Id와 createDate는 자동으로 만들어진다.
+		
+		// 비밀번호 암호화
+		String rawPassword = user.getPassword(); // 원래 비밀번호
+		String encPassword = bCryptPasswordEncoder.encode(rawPassword); // 암호화
+		user.setPassword(encPassword); // 저장
+		
+		userRepository.save(user);
+		
+		return "redirect:/loginForm"; // 회원가입이 정상적으로 완료될 경우, 리다이렉트로 loginForm으로 넘어가도록 함
 	}
 	
 
