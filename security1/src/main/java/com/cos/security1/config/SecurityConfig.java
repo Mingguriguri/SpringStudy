@@ -11,7 +11,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration // IoC 빈(bean)을 등록
 @EnableWebSecurity // 위 활성화 ⇒ 이를 활성화하면 스프링 시큐리티 필터가 스프링 필터체인에 등록이 된다. 
 //특정 주소 접근시 권한 및 인증을 위한 어노테이션 활성화
-@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true) // secured 어노테이션 활성화, preAuthorize 어노테이션 활성화
+@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true) // secured 어노테이션 활성화, preAuthorize&postAuthorize 어노테이션 활성화
 public class SecurityConfig {
 
 	
