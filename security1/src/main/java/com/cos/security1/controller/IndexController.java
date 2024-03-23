@@ -32,8 +32,8 @@ public class IndexController {
 	
 	// 스프링시큐리티 해당주소를 낚아채버림!! -> SecurityConfig 파일 생성 후, 작동 안함
 	@GetMapping("/login")
-	public @ResponseBody String login() {
-		return "login";
+	public String login() {
+		return "loginForm";
 	}
 	
 	@GetMapping("/join")
