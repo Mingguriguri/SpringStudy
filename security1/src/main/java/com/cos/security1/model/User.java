@@ -10,7 +10,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Data;
 
-// @Data // @Data = @toString + @getter + @setter + @RequiredArgsConstructor + @EqualsAndHashCode
+@Data // @Data = @toString + @getter + @setter + @RequiredArgsConstructor + @EqualsAndHashCode
 @Entity
 public class User {
 
@@ -21,6 +21,11 @@ public class User {
 	private String password;
 	private String email;
 	private String role; //ROLE_USER, ROLE_ADMIN
+	
+	// OAuth
+	private String provider; // google
+	private String privderId; // 구글 id인 'sub'값
+	
 	@CreationTimestamp
 	private Timestamp createDate;
 	public int getId() {
