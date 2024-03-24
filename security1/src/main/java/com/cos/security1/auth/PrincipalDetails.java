@@ -2,11 +2,14 @@ package com.cos.security1.auth;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import com.cos.security1.model.User;
+
 
 // 시큐리티가 /login 주소 요청이 오면 낚아채서 로그인을 진행시킨다.
 // 이때 로그인 진행이 완료가 되면 시큐리티 (자신만의) session 공간을 만들어준다.(키값으로 구분한다 :: 'Security ContextHolder'라는 키 값에 세션 정보를 저장한다.
@@ -17,8 +20,8 @@ import com.cos.security1.model.User;
 // 이때 어떻게 UserDetails에 접근하느냐? => implements UserDetails 하면, PrincipalDetails가 UserDetails타입이 된다. 
 // 즉,Security Session => Authentication => UserDetails(=PrincipalDetails)
 // 그러면 PrincipalDetails를 Authentication 객체 안에 넣을 수 있다.
- 
-public class PrincipalDetails implements UserDetails {
+
+public class PrincipalDetails implements UserDetails, OAuth2User {
 
 	// User 정보
 	private User user; // 컴포지션
@@ -83,6 +86,27 @@ public class PrincipalDetails implements UserDetails {
 		// 현재시간 - 로그인한 시간(user.getLoginDate();) => 1년을 초과하면 return false
 		
 		return true;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	// OAuth2User
+	@Override
+	public Map<String, Object> getAttributes() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getName() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
