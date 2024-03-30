@@ -8,10 +8,13 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data // @Data = @toString + @getter + @setter + @RequiredArgsConstructor + @EqualsAndHashCode
 @Entity
+@NoArgsConstructor
 public class User {
 
 	@Id // primary key
@@ -24,7 +27,7 @@ public class User {
 	
 	// OAuth
 	private String provider; // google
-	private String privderId; // 구글 id인 'sub'값
+	private String providerId; // 구글 id인 'sub'값
 	
 	@CreationTimestamp
 	private Timestamp createDate;
@@ -62,6 +65,19 @@ public class User {
 		return createDate;
 	}
 	public void setCreateDate(Timestamp createDate) {
+		this.createDate = createDate;
+	}
+	
+	@Builder
+	public User(String username, String password, String email, String role, String provider, String providerId,
+			Timestamp createDate) {
+		super();
+		this.username = username;
+		this.password = password;
+		this.email = email;
+		this.role = role;
+		this.provider = provider;
+		this.providerId = providerId;
 		this.createDate = createDate;
 	}
 	

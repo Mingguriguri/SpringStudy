@@ -38,3 +38,9 @@ spring:
           scope: #범위
             - email
             - profile
+            
+logging:
+level:
+"[org.springframework.security]": DEBUG
+
+  
