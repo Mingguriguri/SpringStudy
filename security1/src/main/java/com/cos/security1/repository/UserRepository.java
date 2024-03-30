@@ -1,5 +1,7 @@
 package com.cos.security1.repository;
 
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.cos.security1.model.User;
@@ -12,5 +14,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 	// 'findBy'까지는 규칙 | 이 뒤부터 (Username)는 문법
 	// SELECT * FROM user WHERE username = 1?
 	public User findByUsername(String username); // Jpa Query Method
-	
+
+	// SELECT * FROM user WHERE provider = ?1 and providerId = ?2
+	public Optional<User> findByProviderAndProviderId(String provider, String providerId);
 }

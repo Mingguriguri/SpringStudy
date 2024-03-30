@@ -1,5 +1,6 @@
 package com.cos.security1.config.oauth;
 
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -8,10 +9,9 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import com.cos.security1.config.auth.PrincipalDetails;
+import com.cos.security1.config.oauth.provider.GoogleUserInfo;
 import com.cos.security1.model.User;
 import com.cos.security1.repository.UserRepository;
-
-import jakarta.transaction.Transactional;
 
 @Service
 public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
@@ -25,7 +25,6 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
 	// 구글로부터 받은 userRequest 데이터에 대한 후처리되는 함수
     // 함수 종료 시 @AuthenticationPrincipal 어노테이션이 만들어진다.
 	@Override
-	@Transactional
 	public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
 	    System.out.println("OAuth2 로그인 시도: " + userRequest.getClientRegistration().getRegistrationId());
 
@@ -38,8 +37,10 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
 		System.out.println("getAttributes:"+oauth2User.getAttributes());
 
 		
+		
 		// 회원가입 강제 진행
 		String provider = userRequest.getClientRegistration().getClientId(); // google
+		 // 뒤에 진행할 다른 소셜 서비스 로그인을 위해 구분 => 구글
 		String providerId = oauth2User.getAttribute("sub");
 		String username = provider + "_" + providerId; // google_103058387739722400130
 		//String password = bCryptPasswordEncoder.encode("겟인데어"); // 필요 없지만 그냥 만들어주는 것
@@ -48,11 +49,12 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
 		String role = "ROLE_USER";
 		
 		// 이미 회원인지 여부 확인
-		User userEntity = userRepository.findByUsername(username);
+		User findUser = userRepository.findByUsername(username);
+		User user;
 		System.out.println("일단 여기까진 왔음");
-		if (userEntity == null) { // 못 찾았을 경우, 강제로 회원가입
+		if (findUser == null) { // 못 찾았을 경우, 강제로 회원가입
 			System.out.println("구글 로그인이 최초입니다.");
-			userEntity = User.builder()
+			user = User.builder()
 					.username(username)
 					.password(password)
 					.email(email)
@@ -60,13 +62,14 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
 					.provider(provider)
 					.providerId(providerId)
 					.build();
-		    userRepository.save(userEntity);
+		    userRepository.save(user);
 			
 		}
 		else {
+			user = findUser;
 			System.out.println("구글 로그인을 이미 한 적이 있습니다. 당신은 자동 회원가입이 되어 있습니다.");
 		}
 		
-		return new PrincipalDetails(userEntity, oauth2User.getAttributes());
+		return new PrincipalDetails(user, oauth2User.getAttributes());
 	}
 }
